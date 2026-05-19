@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PolyHealth{% endblock %}</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+            background: #c9d9f3;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.85;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+            color: #102a5c;
+        }
+
+        button {
+            background: linear-gradient(135deg, #0f4db8, #6fa1ea);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            margin: 8px 0 14px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #0f4db8;
+            box-shadow: 0 0 0 3px rgba(15, 77, 184, 0.15);
+        }
+
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        .radio-group input {
+            margin-right: 8px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 15px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

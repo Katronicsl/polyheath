@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль - PolyHealth{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap');
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background: #c9d9f3;
+        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .profile-hero {
+        width: 100%;
+        min-height: 30vh;
+        background: linear-gradient(180deg, #0f4db8 0%, #a8c1eb 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-hero::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 420px;
+        height: 420px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        filter: blur(10px);
+    }
+
+    .profile-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -90px;
+        left: 8%;
+        width: 260px;
+        height: 260px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        filter: blur(12px);
+    }
+
+    .topbar {
+        width: calc(100% - 80px);
+        margin: 20px auto 0 auto;
+        padding: 16px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 8px 32px rgba(7, 39, 102, 0.14);
+        position: relative;
+        z-index: 2;
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .small-logo {
+        width: 42px;
+        height: 42px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .small-logo:hover {
+        transform: scale(1.06);
+    }
+
+    .menu {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+    }
+
+    .menu a {
+        color: white;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .menu a:hover {
+        background: rgba(255, 255, 255, 0.16);
+        transform: translateY(-2px);
+    }
+
+    .auth-btn {
+        background: rgba(255, 255, 255, 0.18);
+        color: white;
+        padding: 10px 34px;
+        border-radius: 14px;
+        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 6px 18px rgba(7, 39, 102, 0.14);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(7, 39, 102, 0.18);
+    }
+
+    .profile-body {
+        background: #f5f5f5;
+        background-image: url("{{ url_for('static', filename='images/Frame 11.png') }}");
+        background-size: 95%;
+        background-repeat: repeat;
+        background-position: center;
+        margin-top: -76px;
+        padding-top: 76px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .profile-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 40px 60px;
+    }
+
+    .profile-title {
+        margin: 0 0 24px 0;
+        font-size: 56px;
+        color: #001f5b;
+        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1;
+    }
+
+    .profile-main {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 34px;
+        align-items: center;
+        margin-bottom: 34px;
+    }
+
+    .profile-avatar {
+        width: 220px;
+        height: 220px;
+        border-radius: 14px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .username {
+        margin: 0;
+        font-size: 34px;
+        color: #001f5b;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.1;
+        word-break: break-word;
+    }
+
+    .result-box {
+        max-width: 250px;
+        padding: 15px 10px;
+        border-radius: 14px;
+        background: #a9c7f2;
+        color: white;
+        font-size: 20px;
+        text-align: center;
+        line-height: 1.2;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 20px rgba(15, 77, 184, 0.16);
+    }
+
+    .section-title {
+        margin: 0 0 14px 0;
+        font-size: 28px;
+        color: #001f5b;
+        font-family: Georgia, serif;
+        line-height: 1.1;
+    }
+
+    .tests-scroll {
+        max-height: 390px;
+        overflow-y: auto;
+        padding-right: 6px;
+        margin-bottom: 26px;
+    }
+
+    .tests-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+    .test-card {
+        padding: 16px;
+        border-radius: 16px;
+        background: #a9c7f2;
+        text-align: center;
+        font-size: 17px;
+        line-height: 1.3;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        color: #001f5b;
+        transition: transform 0.25s ease;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .test-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .favorites-title {
+        margin: 0 0 12px 0;
+        font-size: 26px;
+        color: #001f5b;
+        font-family: Georgia, serif;
+        line-height: 1.1;
+    }
+
+    .favorites-scroll {
+        max-height: 360px;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+
+    .favorites-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+    .favorite-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 70px; 
+        padding: 10px;
+        border-radius: 12px;
+        background: #a9c7f2;
+        text-align: center;
+        font-size: 18px; 
+        line-height: 1.2;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        color: #001f5b;
+        box-shadow: 0 6px 14px rgba(15, 77, 184, 0.12);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .favorite-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 18px rgba(15, 77, 184, 0.18);
+    }
+
+    .favorite-tests-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .favorite-test-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+        padding: 16px;
+        border-radius: 16px;
+        background: #a9c7f2;
+        color: #001f5b;
+        text-align: center;
+        font-size: 17px;
+        line-height: 1.3;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 20px rgba(15, 77, 184, 0.16);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .favorite-test-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 24px rgba(15, 77, 184, 0.2);
+    }
+
+    .empty-box {
+        display: block;
+        padding: 12px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.85);
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        color: #102a5c;
+    }
+
+    .profile-actions {
+        margin-top: 22px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        background: #4b78be;
+        color: white;
+        padding: 15px 22px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        transition: transform 0.25s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .tests-scroll::-webkit-scrollbar,
+    .favorites-scroll::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .tests-scroll::-webkit-scrollbar-track,
+    .favorites-scroll::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+    }
+
+    .tests-scroll::-webkit-scrollbar-thumb,
+    .favorites-scroll::-webkit-scrollbar-thumb {
+        background: #8eb4ea;
+        border-radius: 20px;
+    }
+
+    .tests-scroll::-webkit-scrollbar-thumb:hover,
+    .favorites-scroll::-webkit-scrollbar-thumb:hover {
+        background: #6f9fe2;
+    }
+
+    @media (max-width: 900px) {
+        .topbar {
+            width: calc(100% - 30px);
+            padding: 14px 18px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .topbar-left {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .menu {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .profile-content {
+            padding: 0 24px 40px;
+        }
+
+        .profile-title {
+            font-size: 46px;
+        }
+
+        .profile-main {
+            grid-template-columns: 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+        }
+
+        .username {
+            font-size: 30px;
+        }
+
+        .result-box {
+            max-width: 100%;
+            font-size: 20px;
+        }
+
+        .tests-grid,
+        .favorite-tests-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tests-scroll {
+            max-height: 420px;
+        }
+
+        .test-card,
+        .favorite-test-card {
+            font-size: 18px;
+            min-height: 100px;
+        }
+
+        .section-title,
+        .favorites-title {
+            font-size: 24px;
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px; 
+        }
+    }
+</style>
+
+<div class="profile-hero">
+    <div class="topbar">
+        <div class="topbar-left">
+            <img
+                class="small-logo"
+                src="{{ url_for('static', filename='images/логотип.png') }}"
+                alt="logo"
+            >
+
+            <nav class="menu">
+                <a href="/">Главная</a>
+                <a href="/info">Информация</a>
+
+                {% if current_user.is_authenticated %}
+                    <a href="/profile">Мой профиль</a>
+                {% else %}
+                    <a href="/login">Мой профиль</a>
+                {% endif %}
+                
+                <a href="/navigatorarticle">Навигатор статей</a>
+                <a href="/navigatortests">Навигатор тестов</a>
+            </nav>
+        </div>
+
+        {% if current_user.is_authenticated %}
+            <a class="auth-btn" href="/logout">Выйти</a>
+        {% else %}
+            <a class="auth-btn" href="/login">Войти</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="profile-body">
+    <div class="profile-content">
+        <h1 class="profile-title">Мой профиль</h1>
+
+        <div class="profile-main">
+            <img
+                class="profile-avatar"
+                src="{{ url_for('static', filename='images/логотип.png') }}"
+                alt="Профиль"
+            >
+
+            <div class="profile-info">
+                <h2 class="username">{{ current_user.username }}</h2>
+
+                <div class="result-box">
+                    Результат диагностики
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Пройденные тесты:</div>
+
+        {% if tests %}
+            <div class="tests-scroll">
+                <div class="tests-grid">
+                    {% for t in tests %}
+                        <div class="test-card">
+                            <div>
+                                {{ t.test_name }}<br>
+                                {{ t.percent }}%<br>
+                                {{ t.result }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-box">Нет тестов</div>
+        {% endif %}
+
+
+
+        <div class="favorites-title">Избранные статьи:</div>
+        {% if favorites %}
+            <div class="favorites-scroll">
+                <div class="favorites-grid">
+                    {% for a in favorites %}
+                        <a href="/article/{{ a.slug }}" class="favorite-item">
+                            {{ a.title }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-box">Нет избранного</div>
+        {% endif %}
+
+        <div class="profile-actions">
+            <a href="/" class="action-btn">На главную</a>
+            <a href="/logout" class="action-btn">Выйти</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

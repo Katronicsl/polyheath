@@ -1,0 +1,615 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - PolyHealth{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Kalnia:wght@400;600;700&display=swap');
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background: #c9d9f3;
+        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .home-page {
+        width: 100%;
+    }
+
+    .hero {
+        width: 100%;
+        min-height: 60vh;
+        background: linear-gradient(180deg, #0f4db8 0%, #a8c1eb 100%);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 420px;
+        height: 420px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        filter: blur(10px);
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        bottom: -90px;
+        left: 8%;
+        width: 260px;
+        height: 260px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        filter: blur(12px);
+    }
+
+    .topbar {
+        width: calc(100% - 80px);
+        margin: 20px auto 0 auto;
+        padding: 16px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 8px 32px rgba(7, 39, 102, 0.14);
+        position: relative;
+        z-index: 2;
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .small-logo {
+        width: 42px;
+        height: 42px;
+        object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .small-logo:hover {
+        transform: scale(1.06);
+    }
+
+    .menu {
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 26px;
+    }
+
+    .menu a {
+        color: white;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .menu a:hover {
+        background: rgba(255, 255, 255, 0.16);
+        transform: translateY(-2px);
+    }
+
+    .auth-btn {
+        background: rgba(255, 255, 255, 0.18);
+        color: white;
+        padding: 10px 34px;
+        border-radius: 14px;
+        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 6px 18px rgba(7, 39, 102, 0.14);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+
+    .auth-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(7, 39, 102, 0.18);
+    }
+
+    .hero-center {
+        user-select: none;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        padding: 25px 60px 40px;
+        z-index: 2;
+    }
+
+    .hero-logo {
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    .hero-text {
+        max-width: 520px;
+    }
+
+    .hero-title {
+        margin: 0 0 16px 0;
+        font-size: 75px;
+        color: #072766;
+        font-family: "Kalnia", sherif;
+        font-weight: 500;
+    }
+
+    .hero-desc {
+        color: #072766;
+        font-size: 22px;
+        line-height: 1.4;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 600;
+    }
+
+    .test-section {
+        width: 100%;
+        padding: 40px 60px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        background-color: #f5f5f5;
+        background-image: url("{{ url_for('static', filename='images/Frame 11.png') }}");
+        background-repeat: repeat;
+        background-position: center;
+        background-size: 95%;
+    }
+
+    .test-section::before {
+        content: none;
+    }
+
+    .test-inner {
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 50px;
+        z-index: 1;
+        position: relative;
+    }
+
+    .test-text {
+        max-width: 700px;
+        font-size: 20px;
+        line-height: 1.4;
+        font-weight: 700;
+        color: #102a5c;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .test-btn {
+        background: #4b78be;
+        color: white;
+        padding: 14px 38px;
+        border-radius: 14px;
+        font-size: 16px;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 20px rgba(15, 77, 184, 0.2);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        flex-shrink: 0;
+    }
+
+    .test-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px rgba(15, 77, 184, 0.25);
+    }
+
+    .articles-section {
+        padding: 60px;
+    }
+
+    .articles-grid {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 20px;
+    }
+
+    .article-card {
+        background: rgba(255, 255, 255, 0.72);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(16, 42, 92, 0.08);
+        transition: transform 0.35s ease;
+        position: relative;
+        overflow: hidden;
+        display: block;
+    }
+
+    .article-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 18px;
+        width: calc(100% - 36px);
+        height: 4px;
+        background: linear-gradient(90deg, #0f4db8, #6fa1ea);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s ease;
+    }
+
+    .article-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .article-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .article-card.large {
+        min-height: 420px;
+    }
+
+    .article-image {
+        user-select: none;
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+        border-radius: 16px;
+        margin-bottom: 16px;
+    }
+
+    .horizontal-card {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .horizontal-card .article-image {
+        user-select: none;
+        height: 120px;
+        margin: 0;
+    }
+
+    .article-title {
+        margin: 0 0 10px 0;
+        font-size: 22px;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .article-desc {
+        margin: 0 0 14px 0;
+        font-size: 16px;
+             font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        color: #243e72;
+    }
+
+
+    .read-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border-radius: 12px;
+        background: #4b78be;
+        color: white;
+        font-size: 14px;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 20px rgba(15, 77, 184, 0.16);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .read-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px rgba(15, 77, 184, 0.22);
+    }
+
+    
+
+    .right-column {
+        display: grid;
+        gap: 16px;
+    }
+
+    .footer {
+        background: #4b78be;
+        padding: 18px 60px;
+        margin-top: 40px;
+    }
+
+    .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+    }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        user-select: none;
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .footer-brand {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .footer-text {
+        font-size: 16px;
+    }
+
+    @keyframes floatLogo {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 900px) {
+        .topbar {
+            width: calc(100% - 30px);
+            padding: 14px 18px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .topbar-left {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .menu {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-center {
+            flex-direction: column;
+            text-align: center;
+            padding: 25px 24px 36px;
+        }
+
+        .hero-title {
+            font-size: 70px;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+        }
+
+        .test-section,
+        .articles-section,
+        .footer {
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        .test-inner {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .articles-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .horizontal-card {
+            grid-template-columns: 1fr;
+        }
+
+        .horizontal-card .article-image {
+            height: 170px;
+            margin-bottom: 12px;
+        }
+
+        .footer-inner {
+            flex-direction: column;
+            gap: 14px;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="home-page">
+    <section class="hero">
+        <div class="topbar">
+            <div class="topbar-left">
+                <img
+                    class="small-logo"
+                    src="{{ url_for('static', filename='images/логотип.png') }}"
+                    alt="logo"
+                >
+
+                <nav class="menu">
+                    <a href="/">Главная</a>
+                    <a href="/info">Информация</a>
+
+                {% if current_user.is_authenticated %}
+                    <a href="/profile">Мой профиль</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login', next='/profile') }}">Мой профиль</a>
+                {% endif %}
+
+                    <a href="/navigatorarticle">Навигатор статей</a>
+                    <a href="/navigatortests">Навигатор тестов</a>
+                    
+                </nav>
+            </div>
+
+            {% if current_user.is_authenticated %}
+                <a class="auth-btn" href="/logout">Выйти</a>
+            {% else %}
+                <a class="auth-btn "href="{{ url_for('auth.login') }}">Войти</a>
+            {% endif %}
+        </div>
+
+        <div class="hero-center">
+            <img
+                class="hero-logo"
+                src="{{ url_for('static', filename='images/логотип.png') }}"
+                alt="logo"
+            >
+
+            <div class="hero-text">
+                <h1 class="hero-title">PolyHealth</h1>
+
+                <p class="hero-desc">
+                    Оцените своё самочувствие и сделай шаг к здоровому образу жизни!
+                    Мы помогаем делать ЗОЖ понятным и доступным каждый день.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="test-section">
+        <div class="test-inner">
+            <div class="test-text">
+                Чтобы оценить качество своего сна и получить персональную подборку
+                статей вы можете пройти тестирование! Тест поможет оценить ваше качество сна.
+            </div>
+
+            <a href="/test/sleep/0" class="test-btn">
+                Пройти тест
+            </a>
+        </div>
+    </section>
+
+    <section class="articles-section">
+        {% if home_articles and home_articles|length >= 3 %}
+            <div class="articles-grid">
+                <div class="article-card large">
+                    <img
+                        class="article-image"
+                        src="{{ url_for('static', filename='images/' + home_articles[0].image) }}"
+                        alt="{{ home_articles[0].title }}"
+                    >
+
+                    <h3 class="article-title">{{ home_articles[0].title }}</h3>
+
+                    <p class="article-desc">
+                        {{ home_articles[0].desc }}
+                    </p>
+
+                    <a href="{{ home_articles[0].url }}?from=home" class="read-link">
+                        Читать статью
+                    </a>
+                </div>
+
+                <div class="right-column">
+                    <div class="article-card horizontal-card">
+                        <img
+                            class="article-image"
+                            src="{{ url_for('static', filename='images/' + home_articles[1].image) }}"
+                            alt="{{ home_articles[1].title }}"
+                        >
+
+                        <div>
+                            <h3 class="article-title">{{ home_articles[1].title }}</h3>
+                            <p class="article-desc">{{ home_articles[1].desc }}</p>
+                            <a href="{{ home_articles[1].url }}?from=home" class="read-link">
+                                Читать статью
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="article-card horizontal-card">
+                        <img
+                            class="article-image"
+                            src="{{ url_for('static', filename='images/' + home_articles[2].image) }}"
+                            alt="{{ home_articles[2].title }}"
+                        >
+
+                        <div>
+                            <h3 class="article-title">{{ home_articles[2].title }}</h3>
+                            <p class="article-desc">{{ home_articles[2].desc }}</p>
+                            <a href="{{ home_articles[2].url }}?from=home" class="read-link">
+                                Читать статью
+                            </a>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="articles-grid">
+                <div class="article-card large">
+                    <h3 class="article-title">Статей пока нет</h3>
+                    <p class="article-desc">Добавьте статьи, и они появятся здесь.</p>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <img
+                    class="footer-logo"
+                    src="{{ url_for('static', filename='images/логотип.png') }}"
+                    alt="logo"
+                >
+
+                <div class="footer-brand">
+                    PolyHealth
+                </div>
+            </div>
+
+            <div class="footer-text">
+                Политехнический колледж НовГУ 2025-2026
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}

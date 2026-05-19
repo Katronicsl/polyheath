@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+
+{% block title %}Стресс и здоровье - PolyHealth{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap');
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background: #c9d9f3;
+        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .article-hero {
+        width: 100%;
+        min-height: 28vh;
+        background: linear-gradient(180deg, #0f4db8 0%, #a8c1eb 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .article-hero::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -80px;
+        width: 420px;
+        height: 420px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 50%;
+        filter: blur(10px);
+    }
+
+    .article-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -90px;
+        left: 8%;
+        width: 260px;
+        height: 260px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+        filter: blur(12px);
+    }
+
+    .topbar {
+        width: calc(100% - 80px);
+        margin: 20px auto 0 auto;
+        padding: 16px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 24px;
+        background: rgba(255,255,255,0.14);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.22);
+        box-shadow: 0 8px 32px rgba(7,39,102,0.14);
+        position: relative;
+        z-index: 2;
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .small-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+    }
+
+    .menu {
+        display: flex;
+        gap: 26px;
+    }
+
+    .menu a {
+        color: white;
+        padding: 8px 12px;
+        border-radius: 12px;
+        transition: 0.3s;
+    }
+
+    .menu a:hover {
+        background: rgba(255,255,255,0.16);
+    }
+
+    .auth-btn {
+        background: rgba(255,255,255,0.18);
+        color: white;
+        padding: 10px 30px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .article-body {
+        background: #f5f5f5;
+        background-image: url("{{ url_for('static', filename='images/Frame 11.png') }}");
+        background-repeat: repeat;
+        background-position: center;
+        background-size: 95%;
+        margin-top: -70px;
+        padding-top: 80px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        min-height: calc(100vh - 150px);
+        position: relative;
+        z-index: 3;
+    }
+
+    .article-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 40px 60px;
+    }
+
+    .article-header {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 30px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .article-title {
+        font-size: 52px;
+        color: #001f5b;
+        margin: 0 0 12px 0;
+        line-height: 1.1;
+    }
+
+    .article-intro {
+        font-size: 20px;
+        font-weight: 500;
+        color: #243e72;
+        line-height: 1.5;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+    }
+
+    .article-main-image {
+        width: 100%;
+        max-width: 340px;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 24px;
+        justify-self: end;
+        box-shadow: 0 12px 28px rgba(16, 42, 92, 0.14);
+    }
+
+    .section-block {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        margin: 0 0 12px 0;
+        font-size: 30px;
+        color: #001f5b;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .article-text {
+        font-size: 20px;
+        font-weight: 500;
+        color: #243e72;
+        line-height: 1.7;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+    }
+
+    .recommend-box {
+        margin-top: 40px;
+        padding: 26px;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.5);
+        box-shadow: 0 10px 24px rgba(16,42,92,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .recommend-text {
+        font-size: 18px;
+        color: #001f5b;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 600px;
+    }
+
+    .test-btn {
+        background: #4b78be;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        padding: 12px 26px;
+        border-radius: 14px;
+        font-size: 15px;
+        box-shadow: 0 10px 20px rgba(15,77,184,0.2);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+    .test-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(15,77,184,0.3);
+        background: #3f6fbb;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 20px;
+        margin-right: 10px;
+        padding: 12px 22px;
+        border-radius: 14px;
+        background: #4b78be;
+        color: white;
+        font-family: "Jura", Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 20px rgba(15,77,184,0.2);
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 28px rgba(15,77,184,0.3);
+        background: #3f6fbb;
+    }
+
+    .article-image-center {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 20px;
+    }
+
+    .bottom-image {
+        height: auto;
+        max-width: 250px;
+        height: 180px;
+    }
+
+    @media (max-width: 900px) {
+        .article-header {
+            grid-template-columns: 1fr;
+        }
+
+        .article-main-image {
+            justify-self: start;
+            max-width: 100%;
+            height: 240px;
+        }
+
+        .article-title {
+            font-size: 42px;
+        }
+
+        .section-title {
+            font-size: 26px;
+        }
+
+        .article-text,
+        .article-intro {
+            font-size: 18px;
+        }
+    }
+</style>
+
+<div class="article-hero">
+    <div class="topbar">
+        <div class="topbar-left">
+            <img class="small-logo" src="{{ url_for('static', filename='images/логотип.png') }}">
+
+            <nav class="menu">
+                <a href="/">Главная</a>
+                <a href="/info">Информация</a>
+                <a href="/profile">Мой профиль</a>
+                <a href="/navigatorarticle">Навигатор статей</a>
+                <a href="/navigatortests">Навигатор тестов</a>
+            </nav>
+        </div>
+
+        <a class="auth-btn" href="/logout">Выйти</a>
+    </div>
+</div>
+
+<div class="article-body">
+    <div class="article-content">
+
+        <div class="article-header">
+            <div>
+                <h1 class="article-title">Стресс и здоровье</h1>
+                <p class="article-intro">
+                    Стресс может стать причиной серьезных проблем со здоровьем. В статье — 10 простых советов, которые помогут справиться с напряжением и сохранить душевное равновесие.
+                </p>
+            </div>
+
+            <img
+                class="article-main-image"
+                src="{{ url_for('static', filename='images/stress.png') }}"
+                alt="Стресс и здоровье"
+            >
+        </div>
+
+        <div class="section-block">
+            <h2 class="section-title">Что такое стресс</h2>
+            <p class="article-text">
+                Стресс — это состояние человека, которое возникает как реакция на любые события или требования, с которыми человеку трудно или невозможно справиться.
+            </p>
+        </div>
+
+        <div class="section-block">
+            <h2 class="section-title">Почему стресс влияет по-разному</h2>
+            <p class="article-text">
+                Насколько серьёзными окажутся стресс и его последствия для здоровья человека — зависит как от мощности и длительности стресса, так и от психологических и генетических особенностей человека. Не все люди, пережившие стресс сопоставимого уровня, страдают от него одинаково.
+            </p>
+        </div>
+
+        <div class="section-block">
+            <h2 class="section-title">Поддержка важна</h2>
+            <p class="article-text">
+                На то, какими окажутся последствия стресса, оказывают влияние и условия жизни человека, его окружение. Если есть семья, близкие, друзья — стресс переносится легче.
+            </p>
+        </div>
+
+        <div class="section-block">
+            <h2 class="section-title">Чем опасен длительный стресс</h2>
+            <p class="article-text">
+                Стрессы большой силы или длительный хронический стресс могут способствовать развитию и прогрессированию как телесных, так и психических заболеваний. Стресс обычно способствует «выходу из строя» наиболее ослабленных систем организма.
+            </p>
+        </div>
+
+        <div class="section-block">
+            <h2 class="section-title">10 советов против стресса</h2>
+            <p class="article-text">
+                • Старайтесь замедлить темп Вашей жизни. Заранее планируйте рабочий день, чередуйте периоды интенсивной работы с полноценным отдыхом.<br><br>
+                • Высыпайтесь! Взрослому человеку в среднем необходимо 7–8 часов сна в сутки.<br><br>
+                • Не ешьте на ходу: завтрак, обед и ужин должны стать временем отдыха.<br><br>
+                • Не пытайтесь снять стресс с помощью табака или алкоголя. Проблемы, вызвавшие стресс, и сам стресс никуда не денутся, а здоровье пострадает.<br><br>
+                • Снять эмоциональное напряжение поможет физическая нагрузка, особенно связанная с водой: займитесь плаванием или аквааэробикой.<br><br>
+                • Ежедневно отводите немного времени для релаксации: сядьте в удобное кресло, включите приятную музыку, закройте глаза и представьте, что сидите на берегу моря.<br><br>
+                • Старайтесь отвлечься, переключитесь на занятия, которые вызывают у Вас положительные эмоции: поход на концерт, чтение, прогулки на природе или общение с друзьями.<br><br>
+                • Нет возможности изменить обстоятельства жизни — измените своё отношение к ним. Внимательно проанализируйте свои негативные эмоциональные переживания.<br><br>
+                • Сосредоточьтесь на позитивном: обстоятельства Вашей жизни зачастую лучше, чем Вам кажется, когда Вы расстроены.<br><br>
+                • Следите за своим настроением, как за внешним видом, относитесь к своей раздражительности и вспыльчивости как к источнику болезней.
+            </p>
+                <div class="article-image-center">
+                <img 
+                src="{{ url_for('static', filename='images/stresscat.png') }}" 
+                alt="no smoking"
+                class="bottom-image"
+            >
+            </div>
+        </div>
+
+        <div class="recommend-box">
+            <div class="recommend-text">
+                Рекомендуем пройти тест на стресс, чтобы оценить своё состояние.
+            </div>
+
+            <a href="/test/stress/0" class="test-btn">
+                Пройти тест
+            </a>
+        </div>
+
+        {% set back_from = request.args.get('from') %}
+
+        {% if back_from == 'home' %}
+            <a href="{{ url_for('home') }}" class="btn">
+                На главную
+            </a>
+        {% else %}
+            <a href="{{ url_for('navigatorarticle') }}" class="btn">
+                Назад
+            </a>
+        {% endif %}
+
+        {% if is_favorited %}
+            <button class="btn" disabled style="opacity: 0.6; cursor: not-allowed;">
+                ✓ В избранном
+            </button>
+        {% else %}
+            <a href="{{ url_for('articles.favorite', article='stress') }}" class="btn">
+                Добавить в избранное    
+            </a>    
+        {% endif %}
+        <a href="{{ url_for('navigatorarticle') }}" class="btn">
+            К навигатору статей
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}
