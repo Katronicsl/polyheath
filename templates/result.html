@@ -372,6 +372,9 @@
                 {% elif test_name == "fagerstrom" %}
                     <div>{{ smoking_text }}</div>
                     <div style="margin-top: 12px; font-weight: 600;">Рекомендация: {{ smoking_recommendation }}</div>
+                {% elif test_name == "chronotype" %}
+                    <div>{{ chronotype_text }}</div>
+                    <div style="margin-top: 12px; font-weight: 600;">Рекомендация: {{ chronotype_recommendation }}</div>
                 {% else %}
                     Результат теста.
                 {% endif %}
@@ -432,6 +435,24 @@
                             </div>
 
                             <a href="/article/smoking" class="rec-btn">
+                                Читать статью
+                            </a>
+                        </div>
+                    {% elif test_name == "chronotype" %}
+                        <img
+                            class="rec-image"
+                            src="{{ url_for('static', filename='images/sova.jpg') }}"
+                            alt="Статья"
+                        >
+
+                        <div>
+                            <div class="rec-name">Биоритмы и хронотип: жаворонок, сова или голубь?</div>
+
+                            <div class="rec-desc">
+                                Узнайте, как понять свой внутренний ритм, адаптировать режим и улучшить самочувствие.
+                            </div>
+
+                            <a href="/article/chronotype" class="rec-btn">
                                 Читать статью
                             </a>
                         </div>
