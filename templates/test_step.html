@@ -380,6 +380,14 @@
                                 <a href="{{ url_for('tests.smoking_test', step=prev_step) }}" class="nav-btn">
                                     Назад
                                 </a>
+                            {% elif test_type == "chronotype" %}
+                                <a href="{{ url_for('tests.chronotype_test', step=prev_step) }}" class="nav-btn">
+                                    Назад
+                                </a>
+                            {% elif test_type == "hads" %}
+                                <a href="{{ url_for('tests.hads_test', step=prev_step) }}" class="nav-btn">
+                                    Назад
+                                </a>
                             {% endif %}
                         {% endif %}
 

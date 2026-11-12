@@ -694,3 +694,248 @@ def chronotype_test(step):
         headers="Опросник для определения хронотипа",
         test_type="chronotype"
     )
+
+
+hads_questions = [
+    {
+        "question": "1. Я испытываю напряжение, мне не по себе",
+        "answers": {
+            "Всё время": 3,
+            "Часто": 2,
+            "Время от времени, иногда": 1,
+            "Совсем не испытываю": 0
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "2. То, что раньше приносило мне удовольствие, и сейчас вызывает такое же чувство",
+        "answers": {
+            "Определённо это так": 0,
+            "Наверное, это так": 1,
+            "Лишь в очень малой степени": 2,
+            "Это совсем не так": 3
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "3. Я испытываю страх, кажется, будто что-то ужасное вот-вот случится",
+        "answers": {
+            "Определённо это так, и страх очень сильный": 3,
+            "Да, это так, но страх не очень сильный": 2,
+            "Иногда, но это меня не беспокоит": 1,
+            "Совсем не испытываю": 0
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "4. Я способен(на) рассмеяться и увидеть в том или ином событии смешное",
+        "answers": {
+            "Определённо это так": 0,
+            "Наверное, это так": 1,
+            "Лишь в очень малой степени": 2,
+            "Совсем не способен(на)": 3
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "5. Беспокойные мысли крутятся у меня в голове",
+        "answers": {
+            "Постоянно": 3,
+            "Большую часть времени": 2,
+            "Время от времени, и не так часто": 1,
+            "Только иногда": 0
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "6. Я чувствую себя бодрым(ой)",
+        "answers": {
+            "Совсем не чувствую": 3,
+            "Очень редко": 2,
+            "Иногда": 1,
+            "Практически всё время": 0
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "7. Я легко могу присесть и расслабиться",
+        "answers": {
+            "Определённо это так": 0,
+            "Наверное, это так": 1,
+            "Лишь изредка": 2,
+            "Совсем не могу": 3
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "8. Мне кажется, что я стал(а) всё делать очень медленно",
+        "answers": {
+            "Практически всё время": 3,
+            "Часто": 2,
+            "Иногда": 1,
+            "Совсем нет": 0
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "9. Я испытываю внутреннее напряжение или дрожь",
+        "answers": {
+            "Совсем не испытываю": 0,
+            "Иногда": 1,
+            "Часто": 2,
+            "Очень часто": 3
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "10. Я не слежу за своей внешностью",
+        "answers": {
+            "Определённо это так": 3,
+            "Я не уделяю этому столько времени, сколько нужно": 2,
+            "Может быть, я стал(а) меньше уделять этому внимания": 1,
+            "Я слежу за собой так же, как и раньше": 0
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "11. Я испытываю неусидчивость, словно мне постоянно нужно двигаться",
+        "answers": {
+            "Определённо это так": 3,
+            "Навернее, это так": 2,
+            "Лишь в некоторой степени это так": 1,
+            "Совсем не испытываю": 0
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "12. Я считаю, что мои дела (занятия, увлечения) могут принести мне чувство удовлетворения",
+        "answers": {
+            "Точно так же, как и обычно": 0,
+            "Да, но не в той степени, как раньше": 1,
+            "Значительно меньше, чем раньше": 2,
+            "Совсем так не считаю": 3
+        },
+        "scale": "depression"
+    },
+    {
+        "question": "13. У меня бывает внезапное чувство паники",
+        "answers": {
+            "Очень часто": 3,
+            "Довольно часто": 2,
+            "Не так уж часто": 1,
+            "Совсем не бывает": 0
+        },
+        "scale": "anxiety"
+    },
+    {
+        "question": "14. Я могу получить удовольствие от хорошей книги, радио- или телепрограммы",
+        "answers": {
+            "Часто": 0,
+            "Иногда": 1,
+            "Редко": 2,
+            "Очень редко": 3
+        },
+        "scale": "depression"
+    },
+]
+
+
+def hads_range_label(score, category):
+    if category == "anxiety":
+        if score <= 7:
+            return "Норма"
+        elif score <= 10:
+            return "Субклинически выраженные симптомы"
+        elif score <= 14:
+            return "Клинически выраженные симптомы"
+        return "Выраженные симптомы"
+    else:
+        if score <= 7:
+            return "Норма"
+        elif score <= 10:
+            return "Субклинически выраженные симптомы"
+        elif score <= 14:
+            return "Клинически выраженные симптомы"
+        return "Выраженные симптомы"
+
+
+@tests.route("/test/hads/<int:step>", methods=["GET", "POST"])
+def hads_test(step):
+    if not current_user.is_authenticated:
+        return render_template("login_prompt.html", next=url_for("tests.hads_test", step=0))
+
+    if step == 0 and request.method == "GET":
+        session['hads_answers'] = {}
+
+    if request.method == "POST":
+        score = int(request.form.get("score") or 0)
+        session['hads_answers'] = session.get('hads_answers', {})
+        session['hads_answers'][str(step)] = score
+        session.modified = True
+
+        if step < len(hads_questions) - 1:
+            return redirect(url_for("tests.hads_test", step=step + 1))
+
+        anxiety_indexes = [0, 2, 4, 6, 8, 10, 12]
+        depression_indexes = [1, 3, 5, 7, 9, 11, 13]
+
+        anxiety_total = sum(session['hads_answers'].get(str(i), 0) for i in anxiety_indexes)
+        depression_total = sum(session['hads_answers'].get(str(i), 0) for i in depression_indexes)
+
+        anxiety_label = hads_range_label(anxiety_total, "anxiety")
+        depression_label = hads_range_label(depression_total, "depression")
+
+        if anxiety_total <= 7 and depression_total <= 7:
+            hads_summary = "Ваше эмоциональное состояние сейчас в пределах нормы. Сохраняйте режим сна, регулярную физическую активность и социальную поддержку — это поможет не допустить нарастания тревоги и подавленности."
+            hads_recommendation = "Поддерживайте стабильный режим сна, регулярную физическую активность и позитивное общение. Ограничьте стрессовые факторы и делайте 10–15 минут дыхательной релаксации или прогулки в день."
+        elif anxiety_total <= 10 or depression_total <= 10:
+            hads_summary = "У вас есть признаки повышенной тревоги или сниженного настроения. Это ещё не диагноз, но важно не игнорировать сигналы организма и уделить состоянию больше внимания в ближайшие 2–4 недели."
+            hads_recommendation = "Наладьте режим сна, ограничьте кофеин и социальные перегрузки, добавьте 10–15 минут мышечной релаксации или дыхательных упражнений ежедневно. Если состояние не улучшается, стоит обсудить его с терапевтом или психологом."
+        elif anxiety_total <= 14 or depression_total <= 14:
+            hads_summary = "Результат указывает на клинически выраженные симптомы тревоги или депрессии. Они уже могут мешать повседневной жизни, учебе, работе и отношениям, поэтому важно не откладывать помощь."
+            hads_recommendation = "Рекомендуем обратиться к врачу — терапевту, психиатру или психотерапевту — в ближайшие 1–2 недели. Тревога и депрессия хорошо поддаются лечению; психотерапия и при необходимости медикаментозная поддержка могут значительно улучшить состояние."
+        else:
+            hads_summary = "Симптомы тревоги и/или депрессии выражены сильно и требуют внимательного отношения. Не оставайтесь наедине со своим состоянием и не откладывайте обращение за помощью."
+            hads_recommendation = "Обратитесь к психиатру или психотерапевту как можно скорее. Если появляются мысли о причинении себе вреда, невозможность справляться с повседневными делами, сильное бессонница или ухудшение самочувствия — не откладывайте помощь и вызовите скорую или кризисную линию."
+
+        percent = int(((anxiety_total + depression_total) / 42) * 100)
+        result = f"Тревога: {anxiety_label}; Депрессия: {depression_label}"
+
+        TestResult.query.filter_by(user_id=current_user.id, test_name="HADS").delete()
+
+        new_result = TestResult(user_id=current_user.id, test_name="HADS", percent=percent, result=result)
+        db.session.add(new_result)
+        db.session.commit()
+
+        session.pop('hads_answers', None)
+        return render_template(
+            "result.html",
+            percent=percent,
+            result=result,
+            test_name="hads",
+            hads_anxiety_total=anxiety_total,
+            hads_depression_total=depression_total,
+            hads_anxiety_label=anxiety_label,
+            hads_depression_label=depression_label,
+            hads_summary=hads_summary,
+            hads_recommendation=hads_recommendation,
+        )
+
+    if step >= len(hads_questions):
+        return redirect(url_for("home"))
+
+    question = hads_questions[step]
+    prev_step = step - 1 if step > 0 else None
+    next_step = step + 1 if step < len(hads_questions) - 1 else None
+
+    return render_template(
+        "test_step.html",
+        question=question,
+        step=step,
+        prev_step=prev_step,
+        next_step=next_step,
+        questions=hads_questions,
+        headers="Госпитальная шкала тревоги и депрессии (HADS)",
+        test_type="hads"
+    )
+

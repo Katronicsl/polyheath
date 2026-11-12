@@ -375,6 +375,15 @@
                 {% elif test_name == "chronotype" %}
                     <div>{{ chronotype_text }}</div>
                     <div style="margin-top: 12px; font-weight: 600;">Рекомендация: {{ chronotype_recommendation }}</div>
+                {% elif test_name == "hads" %}
+                    <div>
+                        <strong>Тревога (HADS-A):</strong> {{ hads_anxiety_total }} баллов — {{ hads_anxiety_label }}.
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <strong>Депрессия (HADS-D):</strong> {{ hads_depression_total }} баллов — {{ hads_depression_label }}.
+                    </div>
+                    <div style="margin-top: 12px;">{{ hads_summary }}</div>
+                    <div style="margin-top: 12px; font-weight: 600;">Рекомендация: {{ hads_recommendation }}</div>
                 {% else %}
                     Результат теста.
                 {% endif %}
@@ -453,6 +462,24 @@
                             </div>
 
                             <a href="/article/chronotype" class="rec-btn">
+                                Читать статью
+                            </a>
+                        </div>
+                    {% elif test_name == "hads" %}
+                        <img
+                            class="rec-image"
+                            src="{{ url_for('static', filename='images/stress.png') }}"
+                            alt="Статья"
+                        >
+
+                        <div>
+                            <div class="rec-name">Тревога и депрессия: как распознать и что делать</div>
+
+                            <div class="rec-desc">
+                                Узнайте, чем тревога отличается от депрессии, как снизить напряжение и когда стоит обратиться к специалисту.
+                            </div>
+
+                            <a href="/article/hads" class="rec-btn">
                                 Читать статью
                             </a>
                         </div>

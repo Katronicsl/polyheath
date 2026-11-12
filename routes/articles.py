@@ -10,6 +10,7 @@ ARTICLE_SLUG_MAP = {
     "Стресс и здоровье": "stress",
     "Вред курения": "smoking",
     "Биоритмы и хронотип": "chronotype",
+    "Тревога и депрессия: как распознать и что делать": "hads",
 }
 
 REVERSE_ARTICLE_MAP = {slug: title for title, slug in ARTICLE_SLUG_MAP.items()}
